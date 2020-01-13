@@ -1,13 +1,14 @@
+
 WITH first_touch AS (
     SELECT user_id,
         MIN(timestamp) as first_touch_at
     FROM page_visits
-    GROUP BY user_id),
+    GROUP BY user_id),  /* collect into a table all first time stamp form al users */ 
 last_touch AS (
     SELECT user_id,
         MAX(timestamp) as last_touch_at
     FROM page_visits
-    GROUP BY user_id),
+    GROUP BY user_id), /* collect into a table all last time stamp form al users */ 
 first_touch_attr AS (
   SELECT first_touch.user_id,
          first_touch.first_touch_at,
@@ -16,7 +17,7 @@ first_touch_attr AS (
   FROM first_touch 
   JOIN page_visits
     ON first_touch.user_id = page_visits.user_id
-    AND first_touch.first_touch_at = page_visits.timestamp),
+    AND first_touch.first_touch_at = page_visits.timestamp), /* gather first touch time with  campaign and source form al users */ 
 last_touch_attr AS (
   SELECT last_touch.user_id,
          last_touch.last_touch_at,
@@ -27,7 +28,8 @@ last_touch_attr AS (
   JOIN page_visits
     ON last_touch.user_id = page_visits.user_id
     AND last_touch.last_touch_at = page_visits.timestamp
-)
+) /* gather last touch time with  campaign and source form al users */
+
 
 
 /*
